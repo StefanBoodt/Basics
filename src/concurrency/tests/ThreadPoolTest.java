@@ -1,3 +1,15 @@
+/**
+ * This package tests the concurrency package. The documentation of the
+ * package is in ThreadPoolTest.
+ * 
+ * @since 7-8-2014
+ * @version 7-8-2014
+ * 
+ * @author stefanboodt
+ * 
+ * @see concurrency
+ * @see concurrency.tests.ThreadPoolTest
+ */
 package concurrency.tests;
 
 import static org.junit.Assert.assertEquals;
