@@ -8,9 +8,9 @@
  * @author stefanboodt
  * 
  * @see concurrency
- * @see concurrency.tests.ThreadPoolTest
+ * @see concurrencytest.ThreadPoolTest
  */
-package concurrency.tests;
+package concurrencytest;
 
 import static org.junit.Assert.assertEquals;
 
