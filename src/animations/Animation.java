@@ -14,11 +14,20 @@ import java.util.List;
  * class. Although starting from scratch may be advised there.
  * </p>
  * 
+ * <p>
+ * This class relies on AnimeFrame to store it's frames. When planning
+ * on subclassing you should also see that class. Supporting this class
+ * with subclasses from AnimeFrame is fragile, yet possible. You should
+ * consider that changing the methods of AnimeFrame could destroy this
+ * class' functionality.
+ * </p>
+ * 
  * @since 7-8-2014
  * @version 7-8-2014
  * 
  * @see Image
  * @see List
+ * @see AnimeFrame
  * 
  * @author stefanboodt
  *
@@ -58,6 +67,7 @@ public class Animation {
 	 */
 	private void setUp() {
 		totalDuration = 0;
+		currentFrameIndex = 0;
 		frames = new LinkedList<AnimeFrame>();
 	}
 	
@@ -69,5 +79,6 @@ public class Animation {
 	public synchronized void addFrame(Image image, long duration) {
 		AnimeFrame frame = new AnimeFrame(image, duration);
 		totalDuration += duration;
+		frames.add(frame);
 	}
 }
