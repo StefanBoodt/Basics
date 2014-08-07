@@ -78,19 +78,18 @@ public class ThreadPool extends ScheduledThreadPoolExecutor {
 	 * @return a future object that is a representation of the
 	 * calculation. The get method should be used to get it's return
 	 * value.
+	 * @throws InvocationTargetException if the method throws an Exception
+	 * @throws IllegalArgumentException If the method is passed an
+	 * Illegal value.
+	 * @throws IllegalAccessException If the method is unaccessable.
 	 */
-	public Future<?> addTask(Object invoker, Method method, 
-			Object[] parameters) {
+	public Future<?> addTask(Object invoker, Method method,
+			Object[] parameters) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return submit(new Runnable() {
 			public void run() {
-				try {
-					method.invoke(invoker, parameters);
-				} catch (IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					e.printStackTrace();
-				}
+				
 			}
-		}, method.getReturnType());
+		}, method.invoke(invoker, parameters));
 	}
 	
 	/**
