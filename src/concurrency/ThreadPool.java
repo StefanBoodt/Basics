@@ -35,10 +35,11 @@ import javax.swing.ImageIcon;
  * </p>
  * 
  * @since 6-8-2014
- * @version 6-8-2014
+ * @version 7-8-2014
  * 
  * @see Thread
  * @see Runnable
+ * @see Callable
  * @see ScheduledThreadPoolExecutor
  * @see Future
  * 
@@ -84,12 +85,13 @@ public class ThreadPool extends ScheduledThreadPoolExecutor {
 	 * @throws IllegalAccessException If the method is unaccessable.
 	 */
 	public Future<?> addTask(Object invoker, Method method,
-			Object[] parameters) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return submit(new Runnable() {
-			public void run() {
-				
+		Object[] parameters) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Callable<? extends Object> callable = new Callable<Object>() {
+			public Object call() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+				return method.invoke(invoker, parameters);
 			}
-		}, method.invoke(invoker, parameters));
+		};
+		return submit(callable);
 	}
 	
 	/**
