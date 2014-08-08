@@ -56,6 +56,14 @@ public class AnimeFrame extends Observable {
 		setImage(image);
 		setDuration(duration);
 	}
+	
+	/**
+	 * Creates an AnimeFrame that is a copy of the given frame.
+	 * @param frame The frame you want to copy.
+	 */
+	public AnimeFrame(AnimeFrame frame) {
+		this(frame.getImage(), frame.getDuration());
+	}
 
 	/**
 	 * Gets the image.
@@ -102,4 +110,21 @@ public class AnimeFrame extends Observable {
 		notifyObservers(DURATION);
 	}
 
+	/**
+	 * Checks if two Objects are equal.
+	 * They are considered equal when the image and duration are
+	 * equal.
+	 */
+	@Override
+	public boolean equals(Object other) {
+		if (other == this) {
+			return true;
+		}
+		if (other instanceof AnimeFrame) {
+			AnimeFrame that = (AnimeFrame) other;
+			return this.duration == that.duration &&
+					this.image.equals(that.image);
+		}
+		return false;
+	}
 }

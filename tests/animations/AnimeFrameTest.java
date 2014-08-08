@@ -38,6 +38,13 @@ public class AnimeFrameTest {
 	private Image image;
 	
 	/**
+	 * The printer Image. This is used as other image so we don't have
+	 * to load a lot of images.
+	 */
+	private final Image printer = 
+			new ImageIcon("default icons/printer.png").getImage();
+	
+	/**
 	 * The duration of the image and the image frame.
 	 */
 	private long duration;
@@ -153,7 +160,7 @@ public class AnimeFrameTest {
 			}
 		};
 		frame.addObserver(observer);
-		image = new ImageIcon("default icons/printer.png").getImage();
+		image = printer;
 		frame.setImage(image);
 		assertTrue(observer.equals(null));
 	}
@@ -163,7 +170,7 @@ public class AnimeFrameTest {
 	 */
 	@Test
 	public void testGetImageAfterSetting() {
-		image = new ImageIcon("default icons/printer.png").getImage();
+		image = printer;
 		frame.setImage(image);
 		assertEquals(image, frame.getImage());
 	}
@@ -179,14 +186,96 @@ public class AnimeFrameTest {
 	}
 	
 	/**
+	 * Tests equality between the frame and an Object.
+	 */
+	@Test
+	public void testEqualsWithObject() {
+		assertFalse(frame.equals(new Object()));
+	}
+	
+	/**
+	 * Tests equality between the frame and an Exception.
+	 */
+	@Test
+	public void testEqualsWithException() {
+		assertFalse(frame.equals(new Exception()));
+	}
+	
+	/**
+	 * Tests equality with two different durations.
+	 */
+	@Test
+	public void testEqualsDifferentDuration() {
+		AnimeFrame f2 = new AnimeFrame(image, frame.getDuration() + 10);
+		assertFalse(frame.equals(f2));
+	}
+	
+	/**
+	 * Tests equality with two different durations and images.
+	 * Subclasses that set images to printer.png should overwrite this
+	 * method.
+	 */
+	@Test
+	public void testEqualsDifferentDurationAndImage() {
+		AnimeFrame f2 = new AnimeFrame(printer, frame.getDuration() + 10);
+		assertFalse(frame.equals(f2));
+	}
+	
+	/**
+	 * Tests equality with two different Images.
+	 * Subclasses that set images to printer.png should overwrite this
+	 * method.
+	 */
+	@Test
+	public void testEqualsDifferentImages() {
+		AnimeFrame f2 = new AnimeFrame(printer, frame.getDuration());
+		assertFalse(frame.equals(f2));
+	}
+	
+	/**
+	 * Tests for equality of two AnimeFrames with the same adress.
+	 */
+	@Test
+	public void testEqualsSameAdress() {
+		assertEquals(frame, frame);
+	}
+	
+	/**
+	 * Tests for equality of two AnimeFrames with the same arguments.
+	 */
+	@Test
+	public void testEqualsTrueThroughCopyingConstructor() {
+		AnimeFrame f2 = new AnimeFrame(frame); 
+		assertEquals(frame, f2);
+	}
+	
+	/**
+	 * Tests for equality of two AnimeFrames with the same arguments.
+	 */
+	@Test
+	public void testEqualsTrue() {
+		AnimeFrame f2 = new AnimeFrame(frame.getImage(),
+				frame.getDuration()); 
+		assertEquals(frame, f2);
+	}
+	
+	/**
 	 * Sets the AnimeFrame under test to the given value.
 	 * The image and duration used by AnimeFrameTest
 	 * are updated as well.
 	 * @param frame The new frame.
 	 */
-	protected final void setFrame(AnimeFrame frame) {
+	protected synchronized final void setFrame(AnimeFrame frame) {
 		this.frame = frame;
 		duration = frame.getDuration();
 		image = frame.getImage();
+	}
+
+	/**
+	 * Gets the frame used in this test.
+	 * @return The frame under test.
+	 */
+	protected synchronized final AnimeFrame getFrame() {
+		return frame;
 	}
 }
