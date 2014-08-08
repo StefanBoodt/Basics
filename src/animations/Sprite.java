@@ -8,7 +8,7 @@ import java.awt.Image;
  * programs. It represents moving images.
  * 
  * @since 8-8-2014
- * @version 8-8-2014
+ * @version 9-8-2014
  * 
  * @see Image
  * @see Animation
@@ -48,7 +48,18 @@ public class Sprite {
 	 */
 	public Sprite(Animation anim) {
 		super();
+		setUp();
 		animation = anim;
+	}
+	
+	/**
+	 * Does some basic setup for the class.
+	 */
+	private void setUp() {
+		setX(0);
+		setY(0);
+		setDy(0);
+		setDx(0);
 	}
 	
 	/**
@@ -151,5 +162,21 @@ public class Sprite {
 	 */
 	public Image getImage() {
 		return animation.getImage();
+	}
+	
+	/**
+	 * Returns the animation.
+	 * @return the animation.
+	 */
+	public final Animation getAnimation() {
+		return animation;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof Sprite) {
+			return this.animation.equals(((Sprite) other).animation);
+		}
+		return false;
 	}
 }
