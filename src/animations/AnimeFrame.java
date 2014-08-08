@@ -41,6 +41,13 @@ public class AnimeFrame extends Observable {
 	private long duration;
 	
 	/**
+	 * The String that tells duration.
+	 * It is used by notifyObservers(DURATION) which could indicate
+	 * to listening classes that the duration has changed.
+	 */
+	public final static String DURATION = "duration";
+	
+	/**
 	 * Creates an AnimeFrame with the given image and duration.
 	 * @param image The image of this frame.
 	 * @param duration The amount of time the frame is visible.
@@ -60,6 +67,8 @@ public class AnimeFrame extends Observable {
 	
 	/**
 	 * Sets the image to the given value.
+	 * Notifies the observers that it's image has changed.
+	 * It calls #notifyObservers(image).
 	 * @param image The new image.
 	 */
 	protected synchronized final void setImage(Image image) {
@@ -67,6 +76,7 @@ public class AnimeFrame extends Observable {
 			this.image = image;
 			setChanged();
 		}
+		notifyObservers(image);
 	}
 
 	/**
@@ -79,6 +89,9 @@ public class AnimeFrame extends Observable {
 
 	/**
 	 * Sets the duration the frame is visible.
+	 * Notifies the observers that it's duration has changed.
+	 * It calls {@link notifyObservers(DURATION)}. The {@link #DURATION} is the
+	 * String declared in this class.
 	 * @param duration The duration of the frame after this point.
 	 */
 	protected synchronized final void setDuration(long duration) {
@@ -86,6 +99,7 @@ public class AnimeFrame extends Observable {
 			this.duration = duration;
 			setChanged();
 		}
+		notifyObservers(DURATION);
 	}
 
 }

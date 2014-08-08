@@ -167,7 +167,9 @@ public class Animation implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o instanceof AnimeFrame) {
-			updateEndTimes();
+			if (arg.equals(AnimeFrame.DURATION)) {
+				updateEndTimes();	
+			}
 		}
 	}
 }
