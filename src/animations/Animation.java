@@ -3,6 +3,8 @@ package animations;
 import java.awt.Image;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * <p>
@@ -32,7 +34,7 @@ import java.util.List;
  * @author stefanboodt
  *
  */
-public class Animation {
+public class Animation implements Observer {
 
 	/**
 	 * The list of Images to play through.
@@ -85,6 +87,7 @@ public class Animation {
 	public synchronized void addFrame(Image image, long duration) {
 		AnimeFrame frame = new AnimeFrame(image, duration);
 		totalDuration += duration;
+		frame.addObserver(this);
 		frames.add(frame);
 		endTimes.add(totalDuration);
 	}
@@ -155,5 +158,16 @@ public class Animation {
 	 */
 	protected synchronized final AnimeFrame getFrame(int frameIndex) {
 		return frames.get(frameIndex);
+	}
+
+	/**
+	 * Updates the end times if the Observable passed is an
+	 * AnimeFrame.
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		if (o instanceof AnimeFrame) {
+			updateEndTimes();
+		}
 	}
 }

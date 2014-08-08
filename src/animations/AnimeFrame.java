@@ -20,7 +20,7 @@ import java.util.Observable;
  * </p>
  * 
  * @since 7-8-2014
- * @version 7-8-2014
+ * @version 8-8-2014
  * 
  * @see Observable
  * @see Image
@@ -63,7 +63,10 @@ public class AnimeFrame extends Observable {
 	 * @param image The new image.
 	 */
 	protected synchronized final void setImage(Image image) {
-		this.image = image;
+		if (this.image != image) {
+			this.image = image;
+			setChanged();
+		}
 	}
 
 	/**
@@ -79,7 +82,10 @@ public class AnimeFrame extends Observable {
 	 * @param duration The duration of the frame after this point.
 	 */
 	protected synchronized final void setDuration(long duration) {
-		this.duration = duration;
+		if (this.duration != duration) {
+			this.duration = duration;
+			setChanged();
+		}
 	}
 
 }
