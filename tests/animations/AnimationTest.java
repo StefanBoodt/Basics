@@ -109,4 +109,30 @@ public class AnimationTest {
 		animation.getFrame(0).setDuration(101);
 		assertEquals(1, animation.getFrame(0).countObservers());
 	}
+	
+	/**
+	 * Tests the update method. The getImage method is tested at the
+	 * same time. The two can't be split.
+	 */
+	@Test
+	public void testUpdateMethod() {
+		Image i2 = new ImageIcon("default icons/printer").getImage();
+		animation.addFrame(image, 100);
+		animation.addFrame(i2, 50);
+		animation.update(125);
+		assertEquals(i2, animation.getImage());
+	}
+	
+	/**
+	 * Tests the update method. The getImage method is tested at the
+	 * same time. The two can't be split.
+	 */
+	@Test
+	public void testUpdateMethod2() {
+		Image i2 = new ImageIcon("default icons/printer").getImage();
+		animation.addFrame(image, 100);
+		animation.addFrame(i2, 50);
+		animation.update(99);
+		assertEquals(image, animation.getImage());
+	}
 }

@@ -159,6 +159,14 @@ public class Animation implements Observer {
 	protected synchronized final AnimeFrame getFrame(int frameIndex) {
 		return frames.get(frameIndex);
 	}
+	
+	/**
+	 * Gets the image of the current frame.
+	 * @return The image of the current frame.
+	 */
+	public Image getImage() {
+		return getFrame(currentFrameIndex).getImage();
+	}
 
 	/**
 	 * Updates the end times if the Observable passed is an
