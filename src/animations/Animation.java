@@ -25,7 +25,7 @@ import java.util.Observer;
  * </p>
  * 
  * @since 7-8-2014
- * @version 8-8-2014
+ * @version 9-8-2014
  * 
  * @see Image
  * @see List
@@ -77,6 +77,14 @@ public class Animation implements Observer {
 		frames = new LinkedList<AnimeFrame>();
 		endTimes = new LinkedList<Long>();
 		start();
+	}
+	
+	/**
+	 * Resets the animation. It sets the time to 0 and clears all
+	 * pictures out of the animation.
+	 */
+	public void reset() {
+		setUp();
 	}
 	
 	/**
@@ -179,5 +187,18 @@ public class Animation implements Observer {
 				updateEndTimes();	
 			}
 		}
+	}
+	
+	/**
+	 * Tests if two Animations are equal. They are equal if they have
+	 * the same images for the same duration in the same order.
+	 */
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof Animation) {
+			Animation that = (Animation) other;
+			return this.frames.equals(that.frames);
+		}
+		return false;
 	}
 }

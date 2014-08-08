@@ -135,4 +135,60 @@ public class AnimationTest {
 		animation.update(99);
 		assertEquals(image, animation.getImage());
 	}
+	
+	/**
+	 * Tests the reset method.
+	 */
+	@Test (expected = IndexOutOfBoundsException.class)
+	public void testReset() {
+		animation.addFrame(image, 100);
+		animation.addFrame(image, 100);
+		animation.reset();
+		animation.getFrame(0);
+	}
+	
+	/**
+	 * Tests for equality of two AnimeFrames with the same adress.
+	 */
+	@Test
+	public void testEqualsSameAdress() {
+		assertEquals(animation, animation);
+	}
+	
+	/**
+	 * Tests for equality of two AnimeFrames with the same frames.
+	 */
+	@Test
+	public void testEqualsSameValues() {
+		Animation anime = new Animation();
+		animation.reset();
+		animation.addFrame(image, 100);
+		anime.addFrame(image, 100);
+		animation.addFrame(image, 1902);
+		anime.addFrame(image, 1902);
+		assertEquals(animation, anime);
+	}
+	
+	/**
+	 * Tests for equality of two AnimeFrames with other durations.
+	 */
+	@Test
+	public void testEqualsDifferentDuration() {
+		Animation anime = new Animation();
+		animation.reset();
+		animation.addFrame(image, 100);
+		anime.addFrame(image, 100);
+		Image i2 = new ImageIcon("default icons/open.png").getImage();
+		animation.addFrame(i2, 1902);
+		anime.addFrame(i2, 1901);
+		assertFalse(animation.equals(anime));
+	}
+	
+	/**
+	 * Tests for equality of two AnimeFrames with the same adress.
+	 */
+	@Test
+	public void testEqualsWithObject() {
+		assertFalse(animation.equals(new Object()));
+	}
 }
