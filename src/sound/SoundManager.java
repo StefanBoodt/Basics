@@ -1,5 +1,7 @@
 package sound;
 
+import java.io.IOException;
+
 import javax.sound.sampled.*;
 
 import concurrency.ThreadPool;
@@ -32,13 +34,24 @@ import concurrency.ThreadPool;
 public class SoundManager extends ThreadPool {
 
 	/**
-	 * 
+	 * The audioformat used by this object.
 	 */
 	private AudioFormat playbackFormat;
 	
-	private ThreadLocal localLine;
+	/**
+	 * The local line parameter.
+	 */
+	private ThreadLocal<?> localLine;
 	
-	private ThreadLocal localBuffer;
+	/**
+	 * The local buffer parameter.
+	 */
+	private ThreadLocal<?> localBuffer;
+	
+	/**
+	 * The lock for pauses.
+	 */
+	private Object pausedLock;
 	
 	/**
 	 * Keeps track of the paused state of the soundmanager.
@@ -66,9 +79,12 @@ public class SoundManager extends ThreadPool {
 	public SoundManager(AudioFormat format, int maxSounds) {
 		super(maxSounds);
 		playbackFormat = format;
-		localLine = new ThreadLocal();
-		localBuffer = new ThreadLocal();
+		localLine = new ThreadLocal<Object>();
+		localBuffer = new ThreadLocal<Object>();
 		
+		synchronized(this) {
+			notifyAll();
+		}
 	}
 	
 	/**
@@ -82,5 +98,70 @@ public class SoundManager extends ThreadPool {
 				format);
 		Mixer mixer = AudioSystem.getMixer(null);
 		return mixer.getMaxLines(lineinfo);
+	}
+	
+	/**
+	 * Does the pre close clean up.
+	 */
+	protected void cleanUp() {
+		setPaused(true);
+		
+		Mixer mixer = AudioSystem.getMixer(null);
+		if (mixer.isOpen()) {
+			mixer.close();
+		}
+	}
+	
+	/**
+	 * Closes the SoundManager and cleans all executing sounds.
+	 */
+	@Override
+	public void close() throws IOException {
+		cleanUp();
+		super.close();
+	}
+	
+	/**
+	 * Sets the paused to the given value.
+	 * @param paused the new paused value. true if you want to pause,
+	 * false if you want to unpause.
+	 */
+	protected synchronized void setPaused(boolean paused) {
+		this.paused = paused;
+	}
+	
+	/**
+	 * 
+	 * @param filename
+	 * @return
+	 */
+	public Sound getSound(String filename) {
+		return null;
+	}
+	
+	/**
+	 * Does not make them accept any new sounds.
+	 */
+	@Override
+	public void join() {
+		cleanUp();
+		super.join();
+	}
+
+	/**
+	 * Checks if the sound manager is paused.
+	 * @return the paused state, true for paused.
+	 */
+	public synchronized final boolean isPaused() {
+		return paused;
+	}
+	
+	public static class Sound extends javax.media.j3d.Sound {
+		
+		private byte[] samples;
+		
+		public Sound(byte[] samples) {
+			this.samples = samples;
+		}
 	}
 }

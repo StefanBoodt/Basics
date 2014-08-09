@@ -3,3 +3,5 @@
 /gametests/
 /interfaces/
 /sound/
+/concurrency/
+/concurrencytest/
