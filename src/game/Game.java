@@ -26,6 +26,8 @@ public abstract class Game {
 	 */
 	public Game() {
 		super();
+		getElapsedTime();
+		paused = true; // So the stop method can be run.
 		stop();
 	}
 
@@ -40,9 +42,9 @@ public abstract class Game {
 	 * Gets the elapsed time in milliSeconds.
 	 * It calls #System.currentTimeMillis() to calculate the
 	 * elapsed time and then sets it so that the next time is 
-	 * @return the elapsed time.
+	 * @return the elapsed time in milliseconds.
 	 */
-	public long getElapsedTime() {
+	public synchronized long getElapsedTime() {
 		long newtime = System.currentTimeMillis();
 		long elapsed = newtime - getLastTime();
 		lastTime = newtime;
@@ -73,8 +75,10 @@ public abstract class Game {
 	 * Stops the game. Updates one last time before the pause.
 	 */
 	public void stop() {
-		paused = false;
-		update();
+		if (!paused) {
+			paused = true;
+			update();
+		}
 	}
 	
 	/**
@@ -82,15 +86,17 @@ public abstract class Game {
 	 * to continue where you left of.
 	 */
 	public void start() {
-		paused = true;
-		getElapsedTime();
+		if (paused) {
+			paused = false;
+			getElapsedTime();
+		}
 	}
 	
 	/**
 	 * Gets the paused state of the game.
 	 * @return true iff the game is paused.
 	 */
-	public final synchronized boolean isPaused() {
+	public final boolean isPaused() {
 		return paused;
 	}
 }
