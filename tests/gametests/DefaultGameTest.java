@@ -49,6 +49,7 @@ public class DefaultGameTest extends GameTest {
 
 		/**
 		 * Simply calls {@link #getElapsedTime()}.
+		 * @see #getElapsedTime()
 		 */
 		@Override
 		public void update() {
