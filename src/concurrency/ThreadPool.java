@@ -1,6 +1,8 @@
 package concurrency;
 
 import java.awt.Image;
+import java.io.Closeable;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
@@ -46,7 +48,8 @@ import javax.swing.ImageIcon;
  * @author stefanboodt
  *
  */
-public class ThreadPool extends ScheduledThreadPoolExecutor {
+public class ThreadPool extends ScheduledThreadPoolExecutor 
+		implements Closeable {
 	
 	/**
 	 * Sets up a ThreadPool with the given amount of Threads.
@@ -143,5 +146,25 @@ public class ThreadPool extends ScheduledThreadPoolExecutor {
 			ImageIcon icon = new ImageIcon(location);
 			return icon.getImage();
 		}
+	}
+	
+	/**
+	 * Equivalent to shutdown().
+	 * @see #shutdown()
+	 */
+	public void join() {
+		this.shutdown();
+	}
+
+	/**
+	 * Closes the threadpool and kills all threads. It also clears the
+	 * tasklist.
+	 * @throws IOException if an IOException is thrown during
+	 * clean up.
+	 */
+	@Override
+	public void close() throws IOException {
+		this.getQueue().clear();
+		this.shutdownNow();
 	}
 }

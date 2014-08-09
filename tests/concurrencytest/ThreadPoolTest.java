@@ -15,6 +15,7 @@ package concurrencytest;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Image;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +154,40 @@ public class ThreadPoolTest {
 	@Test
 	public final void testReturn100() {
 		assertEquals(100, return100(200));
+	}
+	
+	/**
+	 * Tests the close method.
+	 * @throws IOException if the close method fails.
+	 */
+	@Test
+	public void testCloseThread() throws IOException {
+		pool.close();
+		assertEquals(0, pool.getActiveCount());
+	}
+	
+	/**
+	 * Tests the close method.
+	 * @throws IOException if the close method fails.
+	 */
+	@Test
+	public void testCloseTask() throws IOException {
+		Runnable runner = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					wait(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		};
+		pool.addTask(runner);
+		pool.addTask(runner);
+		pool.addTask(runner);
+		pool.close();
+		assertEquals(0, pool.getQueue().size());
 	}
 	
 	/**
