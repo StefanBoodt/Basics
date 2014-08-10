@@ -25,6 +25,13 @@ import concurrency.ThreadPool;
  * </p>
  * 
  * <p>
+ * For use of small sounds that keep repeating and don't require effects
+ * please make use of the Clip or ClipDelegate classes in this project or
+ * <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/sound/programmer_guide/contents.html">
+ * the Java Sound API.</a>
+ * </p>
+ * 
+ * <p>
  * Possible ideas to extend this class:
  * 	<ul>
  * 		<li> add a setMasterVolume() method which uses Controls to
