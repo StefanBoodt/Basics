@@ -43,7 +43,7 @@ import concurrency.ThreadPool;
  * @author stefanboodt
  *
  */
-public class SoundManager extends ThreadPool {
+public class SoundManager extends ThreadPool implements Observer {
 
 	/**
 	 * The audioformat used by this object.
@@ -51,24 +51,20 @@ public class SoundManager extends ThreadPool {
 	private AudioFormat playbackFormat;
 	
 	/**
-	 * The local line parameter.
-	 */
-	private ThreadLocal<?> localLine;
-	
-	/**
-	 * The local buffer parameter.
-	 */
-	private ThreadLocal<?> localBuffer;
-	
-	/**
 	 * The lock for pauses.
 	 */
-	private Object pausedLock;
+	private final static Object pausedLock = new Object();
 	
 	/**
 	 * Keeps track of the paused state of the soundmanager.
 	 */
 	private boolean paused;
+	
+	/**
+	 * The SoundPlayerThread list that all sound players need to
+	 * register to, so they get the updates.
+	 */
+	private List<SoundPlayerThread> players;
 	
 	/**
 	 * Creates a soundmanager with the given format.
@@ -91,9 +87,7 @@ public class SoundManager extends ThreadPool {
 	public SoundManager(AudioFormat format, int maxSounds) {
 		super(maxSounds);
 		playbackFormat = format;
-		localLine = new ThreadLocal<Object>();
-		localBuffer = new ThreadLocal<Object>();
-		
+		players = new LinkedList<SoundPlayerThread>();
 		synchronized(this) {
 			notifyAll();
 		}
@@ -122,6 +116,10 @@ public class SoundManager extends ThreadPool {
 		if (mixer.isOpen()) {
 			mixer.close();
 		}
+		
+		for (SoundPlayerThread player: players) {
+			player.cleanUp();
+		}
 	}
 	
 	/**
@@ -142,6 +140,9 @@ public class SoundManager extends ThreadPool {
 		if (this.paused != paused) {
 			synchronized (pausedLock) {
 				this.paused = paused;
+				for (SoundPlayerThread player: players) {
+					player.setPaused(paused);
+				}
 				if (!paused) {
 					pausedLock.notifyAll();
 				}
@@ -258,7 +259,10 @@ public class SoundManager extends ThreadPool {
 			if (filter != null) {
 				stream = new FilteredSoundStream(stream, filter);
 			}
-			submit(new SoundPlayerThread(stream));
+			SoundPlayerThread spt = new SoundPlayerThread(stream, playbackFormat);
+			submit(spt);
+			spt.addObserver(this);
+			this.players.add(spt);
 		}
 		return stream;
 	}
@@ -280,8 +284,28 @@ public class SoundManager extends ThreadPool {
 		return paused;
 	}
 	
+	@Override
+	public void update(Observable observable, Object arg) {
+		if (observable instanceof SoundPlayerThread) {
+			SoundPlayerThread player = (SoundPlayerThread) observable;
+			if (arg.equals(SoundPlayerThread.DESTROYED)) {
+				int times = 0;
+				while (players.contains(player)) {
+					players.remove(player);
+					times++;
+				}
+				if (times == 0) {
+					System.out.println("SoundPlayerThread " + player + 
+							" was not contained in the list.");
+				}
+			}
+		}
+	}
+	
 	/**
 	 * This is the Thread that lets the music play.
+	 * The only thing that can be Observed from this class is the
+	 * destruction of this class.
 	 * 
 	 * @since 10-8-2014
 	 * @version 10-8-2014
@@ -293,17 +317,173 @@ public class SoundManager extends ThreadPool {
 	 * @author stefanboodt
 	 *
 	 */
-	public static class SoundPlayerThread implements Runnable {
+	public static class SoundPlayerThread extends Observable
+		implements Runnable {
 		
+		/**
+		 * The source of the player.
+		 */
 		private InputStream source;
 		
-		public SoundPlayerThread(InputStream source) {
-			this.source = source;
+		/**
+		 * The AudioFormat used.
+		 */
+		private AudioFormat format;
+		
+		/**
+		 * The SourceDataLine
+		 */
+		private SourceDataLine line;
+		
+		/**
+		 * The buffer used.
+		 */
+		private byte[] buffer;
+		
+		/**
+		 * Whether or not this player is paused.
+		 */
+		private boolean paused;
+		
+		/**
+		 * Indicates a change in the paused value.
+		 */
+		public static final String PAUSED_CHANGE = "paused was changed";
+		
+		/**
+		 * Indicates the destruction of the player.
+		 */
+		public static final String DESTROYED = "destroyed";
+		
+		/**
+		 * Creates a new SoundPlayerThread with the given source, that
+		 * is not paused.
+		 * @param source The source of the SoundPlayerThread.
+		 * @param format The AudioFormat object.
+		 */
+		public SoundPlayerThread(InputStream source, AudioFormat format) {
+			this(source, format, false);
 		}
-
+		
+		/**
+		 * Creates a new SoundPlayerThread with the given source.
+		 * @param source The source of the SoundPlayerThread.
+		 * @param format The AudioFormat object.
+		 */
+		public SoundPlayerThread(InputStream source, AudioFormat format, boolean paused) {
+			this.source = source;
+			this.format = format;
+			this.paused = paused;
+			startUpThread();
+		}
+		
+		public void setPaused(boolean newPaused) {
+			paused = newPaused;
+			notifyObservers(PAUSED_CHANGE);
+		}
+		
+		/**
+		 * Makes it possible to querie the state.
+		 * @return whether or not this player should be in paused mode.
+		 */
+		public boolean isPaused(){
+			return paused;
+		}
+		
+		/**
+		 * Makes the music play.
+		 */
 		@Override
 		public void run() {
-			
+			if (line == null || buffer == null) {
+				cleanUp();
+				return;
+			}
+			try {
+				int numBytesRead = 0;
+				while (numBytesRead != -1) {
+					synchronized (pausedLock) {
+						if (paused) {
+							try {
+								pausedLock.wait();
+							}
+							catch (InterruptedException e) {
+								/* Prints StackTrace to notify users of
+								 the error. */
+								e.printStackTrace();
+								return;
+							}
+						}
+						numBytesRead = source.read(buffer, 0, buffer.length);
+						if (numBytesRead != -1) {
+							line.write(buffer, 0, numBytesRead);
+						}
+					}
+				}
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			cleanUp();
+		}
+		
+		/**
+		 * Tests if the two Objects are equal.
+		 * they are equal iff
+		 * both are SoundPlayerThreads and both have
+		 * the same source, format and line.
+		 */
+		public boolean equals(Object other) {
+			if (this == other) {
+				return true;
+			}
+			if (other instanceof SoundPlayerThread) {
+				SoundPlayerThread that = (SoundPlayerThread) other;
+				return (this.source.equals(that.source) && 
+						this.line.equals(that.line) &&
+						this.format.equals(that.format));
+			}
+			return false;
+		}
+		
+		/**
+		 * Returns a slightly readable representation of the
+		 * Object.
+		 */
+		@Override
+		public String toString() {
+			return "SoundPlayerThread(InputStream = " + source.toString() + 
+				", SourceDataLine = " + line.toString() + ", format = " + 
+					format.toString() + ")";
+		}
+		
+		/**
+		 * Does any start up for the Thread.
+		 */
+		private void startUpThread() {
+			int bufferSize = format.getFrameSize() *
+					Math.round(format.getSampleRate() / 10);
+			try {
+				line = AudioSystem.getSourceDataLine(format);
+				line.open(format, bufferSize);
+			}
+			catch (LineUnavailableException e) {
+				e.printStackTrace();
+			}
+			line.start();
+			buffer = new byte[bufferSize];
+		}
+		
+		/**
+		 * Does the clean up. It drains and closes the line.
+		 * It then sends a message to it's Observers.
+		 */
+		private void cleanUp() {
+			if (line != null) {
+				line.drain();
+				line.close();
+			}
+			this.notifyObservers(DESTROYED);
 		}
 	}
 	
