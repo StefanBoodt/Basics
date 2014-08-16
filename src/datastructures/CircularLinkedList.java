@@ -123,13 +123,107 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 
 	@Override
 	public void add(int index, E element) {
-		
+		checkIndex(index);
+		index++;
+		Node<E> prev = node(index);
+		prev.setNext(new Node<E>(element, prev.getNext()));
 		size++;
+	}
+	
+	/**
+	 * Adds the element to the beginning of the list.
+	 * @param element The element to be added.
+	 */
+	public void addLast(E element) {
+		if (isEmpty()) {
+			tail = new Node<E>(element, tail);
+		}
+		else {
+			Node<E> node = new Node<E>(element, tail.getNext());
+			tail.setNext(node);
+		}
+		size++;
+	}
+	
+	@Override
+	public boolean add(E element) {
+		int oldSize = size();
+		addLast(element);
+		return oldSize != size;
+	}
+	
+	/**
+	 * Adds the element to the end of the list.
+	 * @param element The element to be added.
+	 * @see #add(Object)
+	 */
+	public void addFirst(E element) {
+		if (isEmpty()) {
+			addLast(element);
+		}
+		else {
+			Node<E> next = tail.getNext();
+			tail.setNext(new Node<E>(element, next));
+			size++;
+		}
+	}
+	
+	/**
+	 * Removes the first element of the list.
+	 * @return the element at the start of the list.
+	 */
+	public E removeFirst() {
+		if (isEmpty()) {
+			throw new EmptyDataStructureException();
+		}
+		final Node<E> first = tail.getNext();
+		final E el = first.getElement();
+		if (size == 1) {
+			tail = null;
+		}
+		else {
+			tail.setNext(first.getNext());
+		}
+		size--;
+		return el;
+	}
+	
+	/**
+	 * Removes the last element of the list.
+	 * @return the element at the end of the list.
+	 */
+	public E removeLast() {
+		if (isEmpty()) {
+			throw new EmptyDataStructureException();
+		}
+		if (size() > 1) {
+			node(size).setNext(tail.getNext());
+		}
+		E el = tail.getElement();
+		tail = tail.getNext();
+		size--;
+		return el;
 	}
 
 	@Override
 	public E remove(int index) {
-		// TODO Auto-generated method stub
+		checkIndex(index);
+		if (index == 0) {
+			Node<E> node = node(size());
+			Node<E> next = tail.getNext();
+			tail = next;
+			node.setNext(node);
+			size--;
+			return next.getElement();
+		}
+		else if (index > 0) {
+			Node<E> prev = node(index - 1);
+			Node<E> next = node(index + 1);
+			E element = node(index).getElement();
+			prev.setNext(next);
+			size--;
+			return element;
+		}
 		return null;
 	}
 	
@@ -139,7 +233,7 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	}
 	
 	@Override
-	protected boolean isElementIndex(int index) {
+	protected boolean isIndex(int index) {
 		return tail != null && index >= 0;
 	}
 	
@@ -149,9 +243,9 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	 * @return The node at the given index.
 	 */
 	protected Node<E> node(int index) {
-		checkElementIndex(index);
+		checkIndex(index);
 		Node<E> finger = tail;
-		for (int left = index; left > 0; left--) {
+		for (int left = index; left >= 0; left--) {
 			finger = finger.getNext();
 		}
 		return finger;
@@ -177,7 +271,7 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 		/**
 		 * Remembers the tail.
 		 */
-		private Node<E> tail;
+		private Node<E> first;
 		
 		/**
 		 * To remember the finger.
@@ -186,16 +280,16 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 		
 		/**
 		 * Creates an Iterator for a circular list.
-		 * @param start The starting point.
+		 * @param tail The last one of the nodes in the circular list.
 		 */
-		public CircularLinkedListIterator(Node<E> start) {
-			tail = start;
-			finger = start;
+		public CircularLinkedListIterator(Node<E> tail) {
+			first = tail.getNext();
+			finger = first;
 		}
 
 		@Override
 		public boolean hasNext() {
-			return finger != null && finger.next != tail;
+			return finger != null && finger.getNext() != first;
 		}
 
 		@Override

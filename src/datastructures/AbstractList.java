@@ -258,9 +258,9 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
     }
     
     /**
-     * Tells if the argument is the index of an existing element.
+     * Tells if the index is valid.
      */
-    protected boolean isElementIndex(int index) {
+    protected boolean isIndex(int index) {
         return index >= 0 && index < size();
     }
 
@@ -268,8 +268,8 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
      * Checks if the index is correct.
      * @param index The index to be checked.
      */
-    protected void checkElementIndex(int index) {
-        if (!isElementIndex(index))
+    protected void checkIndex(int index) {
+        if (!isIndex(index))
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
 	
