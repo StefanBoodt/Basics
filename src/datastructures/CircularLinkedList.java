@@ -136,7 +136,8 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	 */
 	public void addLast(E element) {
 		if (isEmpty()) {
-			tail = new Node<E>(element, tail);
+			tail = new Node<E>(element, null);
+			tail.setNext(tail);
 		}
 		else {
 			Node<E> node = new Node<E>(element, tail.getNext());

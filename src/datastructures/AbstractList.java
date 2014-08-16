@@ -24,12 +24,12 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
 
 	@Override
 	public boolean isEmpty() {
-		return size() > 0;
+		return size() == 0;
 	}
 
 	@Override
 	public boolean contains(Object o) {
-		return indexOf(o) != 0;
+		return indexOf(o) != -1;
 	}
 
 	@Override
