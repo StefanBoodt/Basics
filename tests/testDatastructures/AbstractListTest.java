@@ -1157,6 +1157,42 @@ public abstract class AbstractListTest {
 		list.set(0, s3);
 		assertEquals(s3, list.get(0));
 	}
+	
+	/**
+	 * Tests the {@link CircularLinkedList#remove(Object)}
+	 * Subclasses implementing another version should overwrite this
+	 * method.
+	 */
+	@Test
+	public void testRemoveObjectEmpty() {
+		list.remove(new Object());
+		// nothing unexpected should happen, because the removed index
+		// would be invalid.
+	}
+	
+	/**
+	 * Tests the {@link CircularLinkedList#removeFirst()}
+	 */
+	@Test
+	public void testRemoveFirstSize() {
+		list.add(s1);
+		list.add(s2);
+		list.add(s3);
+		list.remove(0);
+		assertEquals(2, list.size());
+	}
+	
+	/**
+	 * Tests the {@link CircularLinkedList#removeLast()}
+	 */
+	@Test
+	public void testRemoveLastSize() {
+		list.add(s1);
+		list.add(s2);
+		list.add(s3);
+		list.remove(list.size());
+		assertEquals(2, list.size());
+	}
 
 	/**
 	 * Sets the list to the given value.

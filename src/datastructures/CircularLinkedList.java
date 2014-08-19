@@ -218,9 +218,10 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 		if (isEmpty()) {
 			throw new EmptyDataStructureException();
 		}
-		if (size() > 1) {
-			node(size).setNext(tail.getNext());
+		if (size() == 1) {
+			return removeFirst();
 		}
+		node(size).setNext(tail.getNext());
 		E el = tail.getElement();
 		tail = tail.getNext();
 		size--;
@@ -229,10 +230,10 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 
 	@Override
 	public E remove(int index) {
-		checkIndex(index);
 		if (isEmpty()) {
 			throw new EmptyDataStructureException();
 		}
+		checkIndex(index);
 		if (index == 0) {
 			return removeFirst();
 		}
