@@ -3,7 +3,6 @@ package interfaces;
 import static java.awt.RenderingHints.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
 /**
  * This interface makes classes that implement it drawable. That is it's
