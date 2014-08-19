@@ -201,6 +201,8 @@ public class ThreadPoolTest {
 	
 	/**
 	 * Sets the x and returns it.
+	 * @param x The new value.
+	 * @return the new x.
 	 */
 	public Integer setX(Integer x) {
 		this.x = x;

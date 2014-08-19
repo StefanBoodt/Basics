@@ -94,8 +94,10 @@ public class ClipDelegate {
 	}
 	
 	/**
-	 * Equivalent to {@link Clip#equals(Object)}
+	 * Equivalent to Clip.equals(Object).
 	 * Even removes the problem of two clipdelegates being equalized.
+	 * @param other The object to compare to.
+	 * @return true iff they are equal.
 	 */
 	public boolean equals(Object other) {
 		if (other instanceof ClipDelegate) {
@@ -127,6 +129,7 @@ public class ClipDelegate {
 
 	/**
 	 * Equivalent to {@link Clip#isRunning()}
+	 * @return true iff the clip runs.
 	 */
 	public boolean isRunning() {
 		return clip.isRunning();
@@ -134,6 +137,7 @@ public class ClipDelegate {
 
 	/**
 	 * Equivalent to {@link Clip#isActive()}
+	 * @return true iff the clip is active.
 	 */
 	public boolean isActive() {
 		return clip.isActive();
@@ -141,6 +145,7 @@ public class ClipDelegate {
 
 	/**
 	 * Equivalent to {@link Clip#getFormat()}
+	 * @return The AudioFormat used.
 	 */
 	public AudioFormat getFormat() {
 		return clip.getFormat();
@@ -148,13 +153,15 @@ public class ClipDelegate {
 
 	/**
 	 * Equivalent to {@link Clip#getBufferSize()}
+	 * @return the buffer size.
 	 */
 	public int getBufferSize() {
 		return clip.getBufferSize();
 	}
 
 	/**
-	 * Equivalent to {@link Clip#available()}
+	 * Equivalent to {@link Clip#available()}.
+	 * @return the amount of bytes available.
 	 */
 	public int available() {
 		return clip.available();
@@ -231,7 +238,7 @@ public class ClipDelegate {
 	}
 
 	/**
-	 * Equivalent to {@link Clip#getControl(Type)}
+	 * Equivalent to {@link Clip#getControl(Type)}.
 	 */
 	public Control getControl(Type control) {
 		return clip.getControl(control);
@@ -260,7 +267,7 @@ public class ClipDelegate {
 	}
 
 	/**
-	 * Equivalent to {@link Clip# open(AudioInputStream)}
+	 * Equivalent to {@link Clip#open(AudioInputStream)}
 	 */
 	public void open(AudioInputStream stream) throws LineUnavailableException,
 			IOException {
@@ -269,6 +276,7 @@ public class ClipDelegate {
 
 	/**
 	 * Equivalent to {@link Clip#getFrameLength()}
+	 * @return the frame length.
 	 */
 	public int getFrameLength() {
 		return clip.getFrameLength();

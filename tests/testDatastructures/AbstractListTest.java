@@ -1037,7 +1037,7 @@ public abstract class AbstractListTest {
 	}
 	
 	/**
-	 * Tests the {@link AbstractList#RetainAll(List)} method.
+	 * Tests the {@link AbstractList#retainAll(Collection)} method.
 	 */
 	@Test (timeout = 2000)
 	public void testRetainAll() {
@@ -1056,7 +1056,7 @@ public abstract class AbstractListTest {
 	}
 	
 	/**
-	 * Tests the {@link AbstractList#RetainAll(List)} method.
+	 * Tests the {@link AbstractList#retainAll(Collection)} method.
 	 */
 	@Test (timeout = 2000)
 	public void testRetainAllCorners() {
@@ -1075,7 +1075,7 @@ public abstract class AbstractListTest {
 	}
 	
 	/**
-	 * Tests the {@link AbstractList#RetainAll(List)} method.
+	 * Tests the {@link AbstractList#retainAll(Collection)} method.
 	 */
 	@Test (timeout = 2000)
 	public void testRetainAllAll() {
@@ -1098,7 +1098,7 @@ public abstract class AbstractListTest {
 	}
 	
 	/**
-	 * Tests the {@link AbstractList#RetainAll(List)} method.
+	 * Tests the {@link AbstractList#retainAll(Collection)} method.
 	 */
 	@Test (timeout = 2000)
 	public void testRetainAllNoIntersection() {

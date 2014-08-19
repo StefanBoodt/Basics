@@ -7,7 +7,7 @@ package game;
  * @since 16-8-2014
  * @version 16-8-2014
  * 
- * @see Drawable
+ * @see interfaces.Drawable
  * @see GameObject
  * 
  * @author stefanboodt

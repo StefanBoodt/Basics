@@ -39,7 +39,6 @@ import concurrency.ThreadPool;
  * 		<li> don't play a sound if more than, say, 700ms have passed
  * since the request to play.</li>
  * 	</ul>
- * </p>
  * 
  * @since 9-8-2014
  * @version 10-8-2014
@@ -250,6 +249,7 @@ public class SoundManager extends ThreadPool implements Observer {
 	 * Equivalent to {@link #play(InputStream, SoundFilter)} with the
 	 * SoundFilter set to null.
 	 * @param is the inputstream.
+	 * @return the inputStream.
 	 */
 	public InputStream play(InputStream is) {
 		return play(is, null);
@@ -526,10 +526,10 @@ public class SoundManager extends ThreadPool implements Observer {
 		
 		/**
 		 * Creates a looping byte input stream that plays the sound.
-		 * Equivalent to {@link #SoundManager(byte[])} with the given
+		 * Equivalent to SoundManager(byte[]) with the given
 		 * byte array equivalent to sound.getSamples.
 		 * @param sound The sound in the input stream.
-		 * @see #getSamples()
+		 * @see Sound#getSamples()
 		 */
 		public LoopingByteInputStream(Sound sound) {
 			this(sound.getSamples());

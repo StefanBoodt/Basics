@@ -22,7 +22,7 @@ public interface Drawable {
 
 	/**
 	 * Fills the shape done with the 
-	 * @param g
+	 * @param g The graphics Object.
 	 */
 	void draw(Graphics g);
 	

@@ -45,6 +45,7 @@ public class Sprite {
 	
 	/**
 	 * Creates a new Sprite with the given animation.
+	 * @param anim The used animation.
 	 */
 	public Sprite(Animation anim) {
 		super();

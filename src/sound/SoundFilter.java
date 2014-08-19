@@ -66,7 +66,7 @@ public interface SoundFilter {
 	 * The samples should be 16 bit, signed, little-endian format.
 	 * @param buffer The byte array of the sound.
 	 * @param position The position to start on.
-	 * @param short The new short at the given location.
+	 * @param sample The new short at the given location.
 	 */
 	public static void setSample(byte[] buffer, int position, short sample) {
 		buffer[position] = (byte) (sample & 0xff);

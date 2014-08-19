@@ -48,7 +48,7 @@ public class FilteredSoundStream extends FilterInputStream {
 	 * Reads up to len bytes of data from this input stream into an array of bytes.
 	 * If len is not zero, the method blocks until some input is available;
 	 * otherwise, no bytes are read and 0 is returned.
-	 * @see FilterInputStream.{@link #read(byte[], int, int)}.
+	 * @see FilterInputStream#read(byte[], int, int)
 	 */
 	@Override
 	public int read(byte[] samples, int offset, int length) 

@@ -1,5 +1,9 @@
 animations
 concurrency
+concurrencytest
+datastructures
 game
+gametests
 interfaces
 sound
+testDatastructures

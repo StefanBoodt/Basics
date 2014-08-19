@@ -98,8 +98,8 @@ public class AnimeFrame extends Observable {
 	/**
 	 * Sets the duration the frame is visible.
 	 * Notifies the observers that it's duration has changed.
-	 * It calls {@link notifyObservers(DURATION)}. The {@link #DURATION} is the
-	 * String declared in this class.
+	 * It calls {@link notifyObservers(Object)}. With the given duration.
+	 * The {@link #DURATION} is the String declared in this class.
 	 * @param duration The duration of the frame after this point.
 	 */
 	protected synchronized final void setDuration(long duration) {

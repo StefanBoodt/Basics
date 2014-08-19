@@ -78,7 +78,7 @@ public class AnimationTest {
 	
 	/**
 	 * Adds a frame and sees if the animation knows it.
-	 * It also tests {@link #animation.endTime(int)}.
+	 * It also tests {@link Animation#endTime(int)}.
 	 */
 	@Test
 	public void testAddFrame() {

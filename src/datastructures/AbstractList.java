@@ -10,7 +10,7 @@ import java.util.*;
  * @version 19-8-2014
  * 
  * @see List
- * @see CloneAble
+ * @see Cloneable
  * @see Iterable
  * 
  * @author stefanboodt

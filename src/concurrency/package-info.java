@@ -9,7 +9,6 @@
  * 
  * @see Thread
  * @see Runnable
- * @see Threadpool
  * 
  * @author stefanboodt
  *

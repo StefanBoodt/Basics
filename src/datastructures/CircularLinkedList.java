@@ -59,7 +59,7 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	 * default values. It starts the List and adds all values in the
 	 * Collection.
 	 * @see Collection
-	 * @param startUp The default values.
+	 * @param startup The default values.
 	 * @since 18-8-2014
 	 */
 	@SafeVarargs
