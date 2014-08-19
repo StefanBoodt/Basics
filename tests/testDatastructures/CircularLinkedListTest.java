@@ -8,6 +8,17 @@ import org.junit.Test;
 
 import datastructures.CircularLinkedList;
 
+/**
+ * Tests the circular linked list class
+ * 
+ * @since 18-8-2014
+ * @version 18-8-2014
+ * 
+ * @see CircularLinkedList
+ * 
+ * @author stefanboodt
+ *
+ */
 public class CircularLinkedListTest extends AbstractListTest {
 
 	/**

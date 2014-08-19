@@ -8,9 +8,9 @@ import java.util.*;
  * Stack.
  * 
  * @since 16-8-2014
- * @version 16-8-2014
+ * @version 19-8-2014
  * 
- * @see AbstractList<E>
+ * @see AbstractList
  * @see List
  * @see Collection
  * @see Iterable
@@ -52,6 +52,22 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	public CircularLinkedList(Collection<E> startUp) {
 		this();
 		addAll(startUp);
+	}
+	
+	/**
+	 * Creates a new CircularLinkedList with the given Collection as
+	 * default values. It starts the List and adds all values in the
+	 * Collection.
+	 * @see Collection
+	 * @param startUp The default values.
+	 * @since 18-8-2014
+	 */
+	@SafeVarargs
+	public CircularLinkedList(E ... startup) {
+		this();
+		for (E el: startup) {
+			add(el);
+		}
 	}
 	
 	/**
@@ -124,10 +140,14 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	@Override
 	public void add(int index, E element) {
 		checkIndex(index);
-		index++;
-		Node<E> prev = node(index);
-		prev.setNext(new Node<E>(element, prev.getNext()));
-		size++;
+		if (index == 0) {
+			addFirst(element);
+		}
+		else {
+			Node<E> prev = node(index - 1);
+			prev.setNext(new Node<E>(element, prev.getNext()));
+			size++;
+		}
 	}
 	
 	/**
@@ -142,6 +162,7 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 		else {
 			Node<E> node = new Node<E>(element, tail.getNext());
 			tail.setNext(node);
+			tail = node;
 		}
 		size++;
 	}
@@ -209,13 +230,11 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	@Override
 	public E remove(int index) {
 		checkIndex(index);
+		if (isEmpty()) {
+			throw new EmptyDataStructureException();
+		}
 		if (index == 0) {
-			Node<E> node = node(size());
-			Node<E> next = tail.getNext();
-			tail = next;
-			node.setNext(node);
-			size--;
-			return next.getElement();
+			return removeFirst();
 		}
 		else if (index > 0) {
 			Node<E> prev = node(index - 1);
@@ -229,7 +248,7 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	}
 	
 	@Override
-	public List<E> newList() {
+	public AbstractList<E> newList() {
 		return new CircularLinkedList<E>();
 	}
 	
@@ -280,21 +299,37 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 		private Node<E> finger;
 		
 		/**
+		 * Remembers whether or not this is the first round.
+		 */
+		private boolean starting;
+		
+		/**
 		 * Creates an Iterator for a circular list.
 		 * @param tail The last one of the nodes in the circular list.
 		 */
 		public CircularLinkedListIterator(Node<E> tail) {
-			first = tail.getNext();
+			if (tail != null) {
+				first = tail.getNext();
+			}
+			reset();
+		}
+		
+		/**
+		 * Resets the Iterator so it can start again.
+		 */
+		public void reset() {
 			finger = first;
+			starting = true;
 		}
 
 		@Override
 		public boolean hasNext() {
-			return finger != null && finger.getNext() != first;
+			return finger != null && (finger != first || starting);
 		}
 
 		@Override
 		public E next() {
+			starting = false;
 			E element = finger.getElement();
 			finger = finger.next;
 			return element;

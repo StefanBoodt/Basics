@@ -6,7 +6,12 @@ import java.util.*;
  * This class has a default implementation of some methods in the List
  * interface.
  * 
+ * @since 10-8-2014
+ * @version 19-8-2014
+ * 
  * @see List
+ * @see CloneAble
+ * @see Iterable
  * 
  * @author stefanboodt
  *
@@ -115,7 +120,7 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
 
 	@Override
 	public int lastIndexOf(Object o) {
-		for (int i = size() - 1; i > 0; i--) {
+		for (int i = size() - 1; i >= 0; i--) {
 			if (get(i).equals(o)) {
 				return i;
 			}
@@ -126,10 +131,15 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
 	@Override
 	public boolean retainAll(Collection<?> c) {
 		int oldSize = size();
-		for (E elem: this) {
-			if (c.contains(elem)) {
-				removeAll(elem);
+		List<E> removed = new ArrayList<E>();
+		for (int i = 0; i < size(); i++) {
+			E elem = get(i);
+			if (!c.contains(elem)) {
+				removed.add(elem);
 			}
+		}
+		for (E elem: removed) {
+			this.removeAll(elem);
 		}
 		return oldSize != size();
 	}
@@ -158,7 +168,7 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
 	public int hashCode() {
 		int hashCode = 1;
 	    for (E e : this) {
-	    	hashCode = 31 * hashCode + (e==null ? 0 : e.hashCode()); 
+	    	hashCode = 31 * hashCode + e.hashCode(); 
 	    }
 	    return hashCode;
 	}
@@ -199,11 +209,12 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
 	}
 
 	@Override
-	public List<E> subList(int fromIndex, int toIndex) {
-		List<E> sub = this.newList();
-		while (fromIndex > toIndex) {
-			sub.add(this.get(fromIndex));
-			fromIndex++;
+	public AbstractList<E> subList(int fromIndex, int toIndex) {
+		AbstractList<E> sub = this.newList();
+		int index = fromIndex;
+		while (index < toIndex) {
+			sub.add(this.get(index));
+			index++;
 		}
 		return sub;
 	}
@@ -218,6 +229,18 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
 		uni.addAll(this);
 		uni.addAll(other);
 		return uni;
+	}
+	
+	/**
+	 * Intersects this list with the given value.
+	 * @param other The list to compare with.
+	 * @return The intersection of the two lists.
+	 */
+	public Set<E> intersect(List<E> other) {
+		Set<E> intersect = new HashSet<E>();
+		intersect.addAll(this);
+		intersect.retainAll(other);
+		return intersect;
 	}
 	
 	/**
@@ -273,11 +296,25 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
     }
 	
-	/*@Override
-	public AbstractList<E> clone() {
-		Object
-		return null;
-	}*/
+	@SuppressWarnings("unchecked")
+	@Override
+	public AbstractList<E> clone() throws CloneNotSupportedException {
+		return (AbstractList<E>) super.clone();
+	}
+	
+	/**
+	 * Creates a String representation of the AbstractList.
+	 */
+	public String toString() {
+		String res = "";
+		for (E el: this) {
+			res += ", " + el.toString();
+		}
+		if (res.length() >= 2) {
+			res = res.substring(2);
+		}
+		return "[" + res + "]";
+	}
 	
 	/**
 	 * Creates a new version of the list and returns it.
@@ -286,5 +323,5 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
 	 * @see #clear()
 	 * @return an empty instance of the List.
 	 */
-	protected abstract List<E> newList();
+	public abstract AbstractList<E> newList();
 }
