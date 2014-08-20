@@ -30,7 +30,7 @@ public interface Drawable {
 	 * returns g with the anti-aliasing on. This can be ignored as the
 	 * anti-aliasing is turned on for the g that is input not on the
 	 * (identical) output g.
-	 * @param g The Graphics you want to anti-aliasing.
+	 * @param g The Graphics you want to use anti-aliasing.
 	 * @return g.
 	 */
 	static Graphics turnOnAntiAliasing(Graphics g) {

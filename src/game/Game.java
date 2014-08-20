@@ -27,7 +27,7 @@ public abstract class Game {
 	public Game() {
 		super();
 		getElapsedTime();
-		paused = true; // So the stop method can be run.
+		paused = false; // So the stop method can be run.
 		stop();
 	}
 
