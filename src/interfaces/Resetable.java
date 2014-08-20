@@ -8,16 +8,16 @@ package interfaces;
  * or they want to stay open. Sometimes this is not a choice however.
  * 
  * @since 19-8-2014
- * @version 19-8-2014
+ * @version 20-8-2014
  * 
- * @see Iterator
- * @see Closeable
+ * @see java.util.Iterator
+ * @see java.io.Closeable
  * 
  * @author stefanboodt
  *
  */
 public interface Resetable {
-
+	
 	/**
 	 * Resets the resetable so it can be used again from scratch.
 	 * That is the class is reset so that it is entirely recreated

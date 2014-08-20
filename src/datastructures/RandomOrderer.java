@@ -5,7 +5,7 @@ import java.util.Comparator;
 /**
  * The random orderer orders Objects in a random order.
  * It uses {@link Math#random()} to calculate a random number and
- * returns 1 if it is >= 1 and -1 if it is not. Two Objects that are
+ * returns -1 if it is less than  1 and 1 if it is not. Two Objects that are
  * equal will remain at 0.
  * 
  * @since 19-8-2014

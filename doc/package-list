@@ -5,5 +5,7 @@ datastructures
 game
 gametests
 interfaces
+numbers
 sound
 testDatastructures
+testNumbers
