@@ -1,5 +1,7 @@
 package datastructures;
 
+import interfaces.ResetableIterator;
+
 import java.util.*;
 
 /**
@@ -7,11 +9,12 @@ import java.util.*;
  * interface.
  * 
  * @since 10-8-2014
- * @version 19-8-2014
+ * @version 20-8-2014
  * 
  * @see List
  * @see Cloneable
  * @see Iterable
+ * @see ResetableIterator
  * 
  * @author stefanboodt
  *
@@ -324,4 +327,12 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
 	 * @return an empty instance of the List.
 	 */
 	public abstract AbstractList<E> newList();
+	
+	/**
+	 * {@inheritDoc}
+	 * Is now also Resetable.
+	 * @since 20-8-2014
+	 */
+	@Override
+	public abstract ResetableIterator<E> iterator();
 }

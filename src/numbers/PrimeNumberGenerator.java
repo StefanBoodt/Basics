@@ -1,8 +1,6 @@
 package numbers;
 
-import interfaces.Resetable;
-
-import java.util.Iterator;
+import interfaces.*;
 
 /**
  * The PrimeNumberGenerator generates prime numbers and can be used in
@@ -12,11 +10,12 @@ import java.util.Iterator;
  * @version 20-8-2014
  * 
  * @see BufferedPrimeNumberGenerator
+ * @see ResetableIterator
  * 
  * @author stefanboodt
  *
  */
-public class PrimeNumberGenerator implements Iterator<Long>, Resetable {
+public class PrimeNumberGenerator implements ResetableIterator<Long> {
 
 	/**
 	 * The number it currently contains.

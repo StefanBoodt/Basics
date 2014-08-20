@@ -1,5 +1,6 @@
 package datastructures;
 
+import interfaces.ResetableIterator;
 import java.util.*;
 
 /**
@@ -8,7 +9,7 @@ import java.util.*;
  * Stack.
  * 
  * @since 16-8-2014
- * @version 19-8-2014
+ * @version 20-8-2014
  * 
  * @see AbstractList
  * @see List
@@ -90,7 +91,7 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	}
 
 	@Override
-	public Iterator<E> iterator() {
+	public ResetableIterator<E> iterator() {
 		return new CircularLinkedListIterator<E>(tail);
 	}
 
@@ -277,9 +278,9 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	 * It walks over all elements in the list.
 	 * 
 	 * @since 16-8-2014
-	 * @version 16-8-2014
+	 * @version 20-8-2014
 	 * 
-	 * @see Iterator
+	 * @see ResetableIterator
 	 * @see CircularLinkedList
 	 * 
 	 * @author stefanboodt
@@ -287,7 +288,7 @@ public class CircularLinkedList<E> extends AbstractList<E> {
 	 * @param <E> The type stored in the linked list.
 	 */
 	protected static class CircularLinkedListIterator<E> implements
-			Iterator<E> {
+			ResetableIterator<E> {
 		
 		/**
 		 * Remembers the tail.
