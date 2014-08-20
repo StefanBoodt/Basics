@@ -9,7 +9,7 @@ import java.util.zip.*;
 /**
  * This class zips and unzips files. It offers methods that use the
  * <a href="http://docs.oracle.com/javase/8/docs/api/">
- * java.util.zip package</a>. It therefor receives auto updates when
+ * java.util.zip package</a>. It therefore receives auto updates when
  * that package is updated. It's methods make it easier to use the idea
  * of the package.
  * 
