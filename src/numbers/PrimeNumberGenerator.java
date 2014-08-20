@@ -9,7 +9,7 @@ import java.util.Iterator;
  * a for loop. This Generator is defaulted to see 1 not as a prime number.
  * 
  * @since 19-8-2014
- * @version 19-8-2014
+ * @version 20-8-2014
  * 
  * @see BufferedPrimeNumberGenerator
  * 
@@ -77,13 +77,17 @@ public class PrimeNumberGenerator implements Iterator<Long>, Resetable {
 		}
 		START = startingPoint;
 		AMOUNT_OF_STEPS = steps;
-		reset();
+		setUp();
+	}
+	
+	private final void setUp() {
+		number = START;
+		steps = 0;
 	}
 
 	@Override
 	public void reset() {
-		number = START;
-		steps = 0;
+		setUp();
 	}
 
 	@Override
@@ -109,8 +113,11 @@ public class PrimeNumberGenerator implements Iterator<Long>, Resetable {
 	 * @return true iff the number is prime.
 	 */
 	public boolean isPrime(long number) {
+		if (number < FIRST_PRIME) {
+			return false;
+		}
 		double sqrt = Math.sqrt(number);
-		for (long i = 2; i < sqrt; i++) {
+		for (long i = 2; i <= sqrt; i++) {
 			if (number % i == 0) {
 				return false;
 			}

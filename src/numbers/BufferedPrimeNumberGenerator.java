@@ -11,7 +11,7 @@ import datastructures.DefaultComparator;
  * these results to fasten the calculation time of the prime numbers.
  * 
  * @since 19-8-2014
- * @version 19-8-2014
+ * @version 20-8-2014
  * 
  * @see PrimeNumberGenerator
  * 
@@ -26,7 +26,7 @@ public class BufferedPrimeNumberGenerator extends PrimeNumberGenerator {
 	private static List<Long> primeNumbers;
 	
 	/**
-	 * Indicates a change in the Object.
+	 * Keeps track of a change in the list.
 	 */
 	private boolean changed;
 	
@@ -89,6 +89,9 @@ public class BufferedPrimeNumberGenerator extends PrimeNumberGenerator {
 	 */
 	@Override
 	public boolean isPrime(long number) {
+		if (number < FIRST_PRIME) {
+			return false;
+		}
 		if (primeNumbers.contains(number)) {
 			return true;
 		}
@@ -97,7 +100,7 @@ public class BufferedPrimeNumberGenerator extends PrimeNumberGenerator {
 		long largestNum = num;
 		for (int i = 0; i < primeNumbers.size(); i++) {
 			num = primeNumbers.get(i);
-			if (num < sqrt) {
+			if (num <= sqrt) {
 				if (number % num == 0) {
 					return false;
 				}
@@ -113,6 +116,7 @@ public class BufferedPrimeNumberGenerator extends PrimeNumberGenerator {
 			}
 			return answer;
 		}
+		enlist(number);
 		return true;
 	}
 	
@@ -124,9 +128,7 @@ public class BufferedPrimeNumberGenerator extends PrimeNumberGenerator {
 	 */
 	protected final void enlist(long number) {
 		primeNumbers.add(number);
-		if (!changed) {
-			changed = true;
-		}
+		changed = true;
 	}
 	
 	/**
@@ -149,12 +151,14 @@ public class BufferedPrimeNumberGenerator extends PrimeNumberGenerator {
 	 */
 	@Override
 	public void reset() {
-		primeNumbers = new ArrayList<Long>();
-		try {
-			save();
-		}
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
+		if (!primeNumbers.isEmpty()) {
+			primeNumbers = new ArrayList<Long>();
+			try {
+				save();
+			}
+			catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		super.reset();
 	}
@@ -165,18 +169,25 @@ public class BufferedPrimeNumberGenerator extends PrimeNumberGenerator {
 	 * @throws FileNotFoundException If the file doesn't exist and cannot
 	 * be created.
 	 */
-	public void save() throws FileNotFoundException {
-		PrintWriter out = new PrintWriter(new File("files/primenumbers.txt"));
-		String line = "";
-		sortNumbers();
-		for (int i = 1; i <= primeNumbers.size(); i++) {
-			line += primeNumbers.get(i - 1) + " ";
-			if (i % 15 == 0) {
-				out.println(line);
-				out.flush();
-				line = "";
+	public synchronized void save() throws FileNotFoundException {
+		if (changed) {
+			PrintWriter out = new PrintWriter(new File("files/primenumbers.txt"));
+			String line = "";
+			sortNumbers();
+			for (int i = 1; i <= primeNumbers.size(); i++) {
+				line += primeNumbers.get(i - 1) + " ";
+				if (i == primeNumbers.size()) {
+					out.println(line);
+					out.flush();
+				}
+				else if (i % 15 == 0) {
+					out.println(line);
+					out.flush();
+					line = "";
+				}
 			}
+			out.close();
+			changed = false;
 		}
-		out.close();
 	}
 }
