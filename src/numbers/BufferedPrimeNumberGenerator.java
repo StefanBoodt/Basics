@@ -177,7 +177,7 @@ public class BufferedPrimeNumberGenerator extends PrimeNumberGenerator {
 			for (int i = 1; i <= primeNumbers.size(); i++) {
 				line += primeNumbers.get(i - 1) + " ";
 				if (i == primeNumbers.size()) {
-					out.println(line);
+					out.print(line);
 					out.flush();
 				}
 				else if (i % 15 == 0) {
