@@ -2,10 +2,12 @@ animations
 concurrency
 concurrencytest
 datastructures
+encode
 game
 gametests
 interfaces
 numbers
 sound
 testDatastructures
+testEncode
 testNumbers
