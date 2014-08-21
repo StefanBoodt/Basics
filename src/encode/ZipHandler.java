@@ -1,5 +1,8 @@
 package encode;
 
+import interfaces.Zipper;
+import io.WritingReader;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.*;
@@ -14,7 +17,7 @@ import java.util.zip.*;
  * of the package.
  * 
  * @since 20-8-2014
- * @version 20-8-2014
+ * @version 21-8-2014
  * 
  * @see ZipFile
  * @see File
@@ -22,12 +25,17 @@ import java.util.zip.*;
  * @author stefanboodt
  *
  */
-public class ZipHandler {
+public class ZipHandler implements Zipper {
 	
 	/**
 	 * The ZipFile instance used to read the zip files.
 	 */
 	private ZipFile zipped;
+	
+	/**
+	 * The files array.
+	 */
+	private File[] files;
 	
 	/**
 	 * Creates a new Zip used for reading the file.
@@ -80,11 +88,37 @@ public class ZipHandler {
 	}
 	
 	/**
-	 * Unzips the file given by the constructor.
+	 * Creates a ZipHandler that zips the files with the given name.
+	 * @param filenames The name of the files.
+	 */
+	public ZipHandler(String... filenames) {
+		this(createFileArray(filenames));
+	}
+	
+	/**
+	 * Creates a ZipHandler that zips the given files.
+	 * @param files The files array that contains files to be zipped.
+	 */
+	public ZipHandler(File...files) {
+		this.files = files;
+	}
+	
+	/**
+	 * Creates a ZipHandler that zips the given files.
+	 * @param zip The file to read unzipping.
+	 * @param files The files array that contains files to be zipped.
+	 */
+	public ZipHandler(ZipFile zip, File...files) {
+		this.files = files;
+		zipped = zip;
+	}
+	
+	/**
+	 * {@inheritDoc}
 	 * This is equivalent to {@link #unzip(ZipFile)} where the given
 	 * ZipFile is the zipped parameter.
-	 * @throws IOException If an {@link IOException} occurs.
 	 */
+	@Override
 	public void unzip() throws IOException {
 		unzip(zipped);
 	}
@@ -151,19 +185,39 @@ public class ZipHandler {
 				}
 				InputStream is = zipfile.getInputStream(entry);
 				FileOutputStream out = new FileOutputStream(file);
-				byte[] kb = new byte[1024];
-				int length = is.read(kb);
-				while (length >= 0) {
-					out.write(kb, 0, length);
-					length = is.read(kb);
-				}
-				is.close();
-				out.close();
+				WritingReader wr = new WritingReader(is, out);
+				wr.readStream();
+				wr.close();
 			}
 		}
 		zipfile.close();
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * @param unzippedname The name of the zipped file.
+	 */
+	@Override
+	public void unzip(String unzippedname, String dir) throws IOException {
+		unzip(new ZipFile(unzippedname), dir);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * To use this method you should have used one of the following
+	 * constructors: {@link #ZipHandler(File...)} or
+	 * {@link #ZipHandler(String...)}
+	 * @see #ZipHandler(File...)
+	 * @see #ZipHandler(String...)
+	 */
+	@Override
+	public void zip(String zipname) throws IOException {
+		if (files == null) {
+			throw new IOException("There are no files to zip");
+		}
+		zip(zipname, files);
+	}
+
 	/**
 	 * Zips files into making a zip file with the given name.
 	 * @param zipname The name the zipfile has after zipping.
@@ -217,10 +271,7 @@ public class ZipHandler {
 	 * @throws IOException If an IO error occurred.
 	 */
 	public static void zip(String zipname, String...filenames) throws IOException {
-		File[] files = new File[filenames.length];
-		for (int i = 0; i < files.length; i++) {
-			files[i] = new File(filenames[i]);
-		}
+		File[] files = createFileArray(filenames);
 		zip(zipname, files);
 	}
 	
@@ -263,8 +314,21 @@ public class ZipHandler {
 	 * @param filename The name of the file to add to the zip.
 	 * @throws IOException If an IOException occurs.
 	 */
-	protected void addToZip(ZipOutputStream zip, String filename) throws IOException {
+	protected static void addToZip(ZipOutputStream zip, String filename) throws IOException {
 		addToZip(zip, new File(filename));
+	}
+	
+	/**
+	 * Creates an array of File from an array of filenames.
+	 * @param filenames The names of the files.
+	 * @return An array of File.
+	 */
+	private static File[] createFileArray(String[] filenames) {
+		File[] files = new File[filenames.length];
+		for (int i = 0; i < files.length; i++) {
+			files[i] = new File(filenames[i]);
+		}
+		return files;
 	}
 	
 	/**

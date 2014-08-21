@@ -3,7 +3,6 @@
  * files. Popular encoding is encrypting files into Zip files.
  * 
  * @since 20-8-2014
- * @version 20-8-2014
  * 
  * @see java.util.zip.ZipFile
  * 
