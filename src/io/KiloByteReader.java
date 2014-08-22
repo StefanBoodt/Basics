@@ -67,7 +67,7 @@ public class KiloByteReader extends Reader {
 	
 	/**
 	 * Returns the amount of characters read 
-	 * @return
+	 * @return The read amount.
 	 */
 	public int getReadAmount() {
 		return length;

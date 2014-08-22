@@ -23,8 +23,8 @@ import java.util.zip.*;
  * @version 22-8-2014
  * 
  * @see ZipHandler
- * @see GZipInputStream
- * @see GZipOutputStream
+ * @see GZIPInputStream
+ * @see GZIPOutputStream
  * @see BufferedReader
  * @see FileWriter
  * 

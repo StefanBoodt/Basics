@@ -7,9 +7,9 @@ import java.io.IOException;
  * zipping.
  * 
  * @since 21-8-2014
- * @version 21-8-2014
+ * @version 22-8-2014
  * 
- * @see ZipFile
+ * @see java.util.zip.ZipFile
  * 
  * @author stefanboodt
  *
@@ -25,7 +25,7 @@ public interface Zipper {
 	
 	/**
 	 * Unzips the given file in the current directory
-	 * @param zipped The name of the unzipped.
+	 * @param unzippedname The name of the unzipped file.
 	 * @param dir The directory to put the unzipped files in.
 	 * @throws IOException If an IOException is thrown.
 	 */

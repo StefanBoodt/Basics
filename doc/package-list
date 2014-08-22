@@ -6,6 +6,7 @@ encode
 game
 gametests
 interfaces
+io
 numbers
 sound
 testDatastructures
