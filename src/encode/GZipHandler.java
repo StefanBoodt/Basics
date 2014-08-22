@@ -20,7 +20,7 @@ import java.util.zip.*;
  * </p>
  * 
  * @since 21-8-2014
- * @version 21-8-2014
+ * @version 22-8-2014
  * 
  * @see ZipHandler
  * @see GZipInputStream
@@ -56,9 +56,16 @@ public class GZipHandler implements Zipper {
 	public static void zip(String filename, String output)
 				throws IOException{
 		FileInputStream input = new FileInputStream(filename);
-		FileOutputStream out = new FileOutputStream(output);
+		File f = new File(output);
+		File parent = f.getParentFile();
+		if (parent != null) {
+			parent.mkdirs();
+		}
+		FileOutputStream out = new FileOutputStream(f);
 		GZIPOutputStream stream = new GZIPOutputStream(out);
-		
+		WritingReader reader = new WritingReader(input, stream);
+		reader.readStream();
+		reader.close();
 	}
 
 	@Override
