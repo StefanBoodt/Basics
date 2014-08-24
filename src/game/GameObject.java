@@ -8,21 +8,15 @@ import interfaces.Drawable;
  * games. It also makes the Objects moveable and damagable.
  * 
  * @since 16-8-2014
- * @version 16-8-2014
+ * @version 24-8-2014
  * 
  * @see Drawable
+ * @see GamePiece
  * 
  * @author stefanboodt
  *
  */
-public interface GameObject extends Drawable {
-
-	/**
-	 * Moves the GameObject by dx and dy.
-	 * @param dx The horizontal distance.
-	 * @param dy The vertical distance.
-	 */
-	public void move(float dx, float dy);
+public interface GameObject extends GamePiece {
 	
 	/**
 	 * Makes the GameObject hit.
