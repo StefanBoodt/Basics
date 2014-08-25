@@ -9,7 +9,7 @@ import java.util.*;
  * interface.
  * 
  * @since 10-8-2014
- * @version 20-8-2014
+ * @version 25-8-2014
  * 
  * @see List
  * @see Cloneable
@@ -285,6 +285,8 @@ public abstract class AbstractList<E> implements List<E>, Iterable<E>,
     
     /**
      * Tells if the index is valid.
+     * @param index The index to validate.
+     * @return true if the index is valid.
      */
     protected boolean isIndex(int index) {
         return index >= 0 && index < size();
