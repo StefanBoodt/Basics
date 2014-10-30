@@ -23,7 +23,7 @@ public interface Drawable {
 	 * Fills the shape done with the 
 	 * @param g The graphics Object.
 	 */
-	void draw(Graphics g);
+	public void draw(Graphics g);
 	
 	/**
 	 * If g is a #Graphics2D object it turns on anti-aliasing. It then
@@ -33,7 +33,7 @@ public interface Drawable {
 	 * @param g The Graphics you want to use anti-aliasing.
 	 * @return g.
 	 */
-	static Graphics turnOnAntiAliasing(Graphics g) {
+	public static Graphics turnOnAntiAliasing(Graphics g) {
 		if (g instanceof Graphics2D) {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setRenderingHint(KEY_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);

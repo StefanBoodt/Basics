@@ -41,4 +41,28 @@ public interface GamePiece extends Drawable {
 	public default boolean isConcrete() {
 		return true;
 	}
+	
+	/**
+	 * Gets the x value of this game piece.
+	 * @return the x value of this piece.
+	 */
+	public float getX();
+	
+	/**
+	 * Gets the y value of this game piece.
+	 * @return The y value of the game piece.
+	 */
+	public float getY();
+	
+	/**
+	 * Gets the width of the piece.
+	 * @return The width of the game piece.
+	 */
+	public float getWidth();
+	
+	/**
+	 * Gets the height of the game piece.
+	 * @return The height of the game piece.
+	 */
+	public float getHeight();
 }

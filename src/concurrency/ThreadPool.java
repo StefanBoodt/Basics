@@ -85,8 +85,8 @@ public class ThreadPool extends ScheduledThreadPoolExecutor
 	 * Illegal value.
 	 * @throws IllegalAccessException If the method is unaccessable.
 	 */
-	public Future<?> addTask(Object invoker, Method method,
-		Object[] parameters) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public Future<?> addTask(final Object invoker, final Method method,
+		final Object[] parameters) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Callable<? extends Object> callable = new Callable<Object>() {
 			public Object call() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 				return method.invoke(invoker, parameters);
