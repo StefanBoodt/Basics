@@ -103,7 +103,7 @@ public abstract class Level implements Drawable {
 	 * @param enemies The new enemies in this level.
 	 */
 	public final synchronized void setEnemies(Set<Enemy> enemies) {
-		if (!(getEnemies().equals(enemies))) {
+		if (!(getEnemies() != null && getEnemies().equals(enemies))) {
 			this.enemies = enemies;
 		}
 	}
