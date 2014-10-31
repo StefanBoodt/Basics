@@ -4,13 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Tests the Default Level implementation.
  * 
  * @since 30-10-2014
- * @version 30-10-2014
+ * @version 31-10-2014
  * 
  * @see DefaultLevel
  * @see Level
@@ -47,7 +46,15 @@ public class DefaultLevelTest extends LevelTest {
 		 * Creates a new Default level.
 		 */
 		public DefaultLevel() {
-			super("Default Level");
+			this("Default Level");
+		}
+		
+		/**
+		 * Creates a new Default level.
+		 * @param name The name of the level.
+		 */
+		public DefaultLevel(String name) {
+			super(name);
 		}
 
 		@Override
@@ -55,6 +62,18 @@ public class DefaultLevelTest extends LevelTest {
 			
 		}
 		
+	}
+
+	@Override
+	public void testEqualsCopy() {
+		final Level other = new DefaultLevel();
+		assertEquals(getLevel(), other);
+	}
+
+	@Override
+	public void testHashCodeCopy() {
+		final Level other = new DefaultLevel();
+		assertEquals(other.hashCode(), getLevel().hashCode());
 	}
 
 }

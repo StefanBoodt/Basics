@@ -142,6 +142,59 @@ public abstract class LevelTest {
 	}
 	
 	/**
+	 * Tests the {@link Level#hashCode()} method.
+	 */
+	@Test
+	public void testHashCode() {
+		final String levelname = "Test Level";
+		getLevel().setName(levelname);
+		final int expected = levelname.hashCode();
+		assertEquals(expected, getLevel().hashCode());
+	}
+	
+	/**
+	 * Tests the {@link Level#equals(Object)} method.
+	 */
+	@Test
+	public void testEqualsSame() {
+		final String levelname = "Test Level";
+		getLevel().setName(levelname);
+		assertEquals(getLevel(), getLevel());
+	}
+	
+	/**
+	 * Tests the {@link Level#equals(Object)} method.
+	 */
+	@Test
+	public void testEqualsObject() {
+		final String levelname = "Test Level";
+		getLevel().setName(levelname);
+		assertFalse(getLevel().equals(new Object()));
+	}
+	
+	/**
+	 * Tests the {@link Level#equals(Object)} method.
+	 */
+	@Test
+	public void testEqualsException() {
+		final String levelname = "Test Level";
+		getLevel().setName(levelname);
+		assertFalse(getLevel().equals(new Exception()));
+	}
+	
+	/**
+	 * Tests the {@link Level#equals(Object)} method.
+	 */
+	@Test
+	public abstract void testEqualsCopy();
+	
+	/**
+	 * Tests the {@link Level#hashCode()} method.
+	 */
+	@Test
+	public abstract void testHashCodeCopy();
+	
+	/**
 	 * Sets the level to the given level.
 	 * @param level The new level under test.
 	 */

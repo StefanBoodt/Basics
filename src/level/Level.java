@@ -52,7 +52,7 @@ public abstract class Level implements Drawable {
 	 * @param name The name of the level.
 	 */
 	public Level(String name) {
-		this(new HashSet<Enemy>());
+		this(name, new HashSet<Enemy>());
 	}
 	
 	/**
@@ -70,8 +70,9 @@ public abstract class Level implements Drawable {
 	 * Creates a level with the given enemies.
 	 * @param enemies The enemies found in the level.
 	 */
-	public Level(Collection<Enemy> enemies) {
+	public Level(String name, Collection<Enemy> enemies) {
 		setEnemies(enemies);
+		setName(name);
 		setUp();
 	}
 	
@@ -183,5 +184,19 @@ public abstract class Level implements Drawable {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof Level) {
+			Level that = (Level) other;
+			return this.getName().equalsIgnoreCase(that.getName());
+		}
+		return false; 
+	}
+	
+	@Override
+	public int hashCode() {
+		return getName().hashCode();
 	}
 }
