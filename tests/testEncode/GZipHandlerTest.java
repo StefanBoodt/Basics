@@ -14,7 +14,7 @@ import encode.*;
  * Tests the GZipHandler class
  * 
  * @since 22-8-2014
- * @version 22-8-2014
+ * @version 31-10-2014
  * 
  * @see ZipHandler
  * 
@@ -57,6 +57,28 @@ public class GZipHandlerTest {
 	@Test
 	public void testZip() throws IOException {
 		GZipHandler.zip("files/Zippart2.txt", GZIP_LOC);
+	}
+	
+	/**
+	 * Tests the {@link GZipHandler#zip(String, String)} method.
+	 * @throws IOException If an IOException is thrown.
+	 */
+	@Test
+	public void testGZipThroughConstructor() throws IOException {
+		final String loc = "files/primenumbers.txt";
+		GZipHandler gzip = new GZipHandler(new File(loc));
+		gzip.zip();
+		assertTrue(new File(loc + ".gz").exists());
+	}
+	
+	/**
+	 * Tests the {@link GZipHandler#zip(String, String)} method.
+	 * @throws IOException If an IOException is thrown.
+	 */
+	@Test
+	public void testUnGZipThroughConstructor() throws IOException {
+		GZipHandler gzip = new GZipHandler(new File("files/primenumbers.txt.gz"));
+		gzip.unzip();
 	}
 	
 	/**

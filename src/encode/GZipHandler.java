@@ -20,7 +20,7 @@ import java.util.zip.*;
  * </p>
  * 
  * @since 21-8-2014
- * @version 22-8-2014
+ * @version 31-10-2014
  * 
  * @see ZipHandler
  * @see GZIPInputStream
@@ -67,10 +67,18 @@ public class GZipHandler implements Zipper {
 		reader.readStream();
 		reader.close();
 	}
+	
+	/**
+	 * Zips the file given by the constructor.
+	 * @throws IOException If an IOException occurs.
+	 */
+	public void zip() throws IOException {
+		zip(file.getPath() + ".gz");
+	}
 
 	@Override
 	public void zip(String zipname) throws IOException {
-		zip(file.getName(), zipname);
+		zip(file.getPath(), zipname);
 	}
 
 	@Override
@@ -92,8 +100,8 @@ public class GZipHandler implements Zipper {
 	@Override
 	public void unzip() throws IOException {
 		String filename = file.getName();
-		if (filename.contains(".")) {
-			int extindex = filename.lastIndexOf(".");
+		int extindex = filename.lastIndexOf(".");
+		if (extindex >= 0) {
 			int dirIndex = filename.lastIndexOf("/");
 			if (dirIndex < 0) {
 				dirIndex = 0;
