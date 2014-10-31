@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import game.Enemy;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -117,6 +118,17 @@ public abstract class LevelTest {
 		final boolean secondSet = false;
 		level.setFinished(secondSet);
 		assertFalse(level.isFinished());
+	}
+	
+	/**
+	 * Tests the {@link Level#getBackGround()} method.
+	 * @throws IOException If an IOException is thrown.
+	 */
+	@Test
+	public void testGetBackGround() throws IOException {
+		Level lv = getLevel();
+		lv.setBackGround(LevelTest.class.getResource("/printer.png"));
+		assertNotNull(lv.getBackGround());
 	}
 	
 	/**

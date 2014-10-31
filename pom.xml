@@ -16,6 +16,17 @@
   <build>
     <sourceDirectory>src</sourceDirectory>
     <testSourceDirectory>tests</testSourceDirectory>
+    <resources>
+      <resource>
+        <directory>resources</directory>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>testresources</directory>
+      </testResource>
+    </testResources>
+    
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
