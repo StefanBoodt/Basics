@@ -3,10 +3,13 @@ package testEncode;
 import static encode.ZipHandler.CommentedFile;
 
 import java.io.*;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 import encode.ZipHandler;
 
 /**
@@ -41,7 +44,7 @@ public class ZipHandlerTest {
 	 * The foreign zip used by the test.
 	 */
 	private static final String FOREIGN_ZIP_LOCATION = FILES_FOLDER + 
-			"ForeignZip.zip";
+			"Foreign zip/" + "ForeignZip.zip";
 	
 	private final static String COMMENTED = "commented/";
 	
@@ -139,5 +142,15 @@ public class ZipHandlerTest {
 	 */
 	public final void setZipHandler(ZipHandler handler) {
 		this.handler = handler;
+	}
+	
+	/**
+	 * Tests if the foreign zip can be unzipped.
+	 * @throws IOException If an IOException is thrown
+	 * @throws ZipException If the zipping fails.
+	 */
+	@Test
+	public void testUnzipForeign() throws ZipException, IOException {
+		//ZipHandler.unzip(new File(FOREIGN_ZIP_LOCATION));
 	}
 }

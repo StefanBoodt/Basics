@@ -132,6 +132,16 @@ public abstract class LevelTest {
 	}
 	
 	/**
+	 * Tests the {@link Level#getName()} method.
+	 */
+	@Test
+	public void testGetName() {
+		final String levelname = "Test Level";
+		getLevel().setName(levelname);
+		assertEquals(levelname, getLevel().getName());
+	}
+	
+	/**
 	 * Sets the level to the given level.
 	 * @param level The new level under test.
 	 */

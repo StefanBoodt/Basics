@@ -43,18 +43,26 @@ public abstract class Level implements Drawable {
 	private Image background;
 	
 	/**
-	 * Creates a level.
+	 * The name of this level.
 	 */
-	public Level() {
+	private String name;
+	
+	/**
+	 * Creates a level.
+	 * @param name The name of the level.
+	 */
+	public Level(String name) {
 		this(new HashSet<Enemy>());
 	}
 	
 	/**
 	 * Creates a level with the given enemies.
+	 * @param name The name of the level.
 	 * @param enemies The enemies found in the enemies.
 	 */
-	public Level(Set<Enemy> enemies) {
+	public Level(String name, Set<Enemy> enemies) {
 		setEnemies(enemies);
+		setName(name);
 		setUp();
 	}
 	
@@ -100,7 +108,7 @@ public abstract class Level implements Drawable {
 	 * @param enemies The enemies present.
 	 */
 	public void setEnemies(Collection<Enemy> enemies) {
-		if (!(getEnemies().equals(enemies))) {
+		if (getEnemies() == null || !(getEnemies().equals(enemies))) {
 			Set<Enemy> en = new HashSet<Enemy>();
 			for (Enemy enemy: enemies) {
 				en.add(enemy);
@@ -159,5 +167,21 @@ public abstract class Level implements Drawable {
 	 */
 	public Image getBackGround() {
 		return background;
+	}
+	
+	/**
+	 * Requests the name of this level.
+	 * @return The name of this level.
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * Sets the name of this level.
+	 * @param name The name of the level.
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 }

@@ -36,12 +36,19 @@ public class DefaultLevelTest extends LevelTest {
 	 * An inner class used for testing that does nothing at all.
 	 * 
 	 * @since 30-10-2014
-	 * @version 30-10-2014
+	 * @version 31-10-2014
 	 * 
 	 * @author stefanboodt
 	 *
 	 */
 	public final class DefaultLevel extends Level {
+		
+		/**
+		 * Creates a new Default level.
+		 */
+		public DefaultLevel() {
+			super("Default Level");
+		}
 
 		@Override
 		public void start() {
