@@ -1,0 +1,1 @@
+When using maven and referring to this file. It is necessary to run maven install on this project and maven eclipse:eclipse on the other.
