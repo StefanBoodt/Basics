@@ -20,7 +20,7 @@ import javax.imageio.ImageIO;
  * the level.
  * 
  * @since 30-10-2014
- * @version 30-10-2014
+ * @version 03-11-2014
  * 
  * @author Stefan Boodt
  *
