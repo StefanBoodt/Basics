@@ -1,7 +1,5 @@
 package gui;
 
-import java.awt.Component;
-
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -22,6 +20,8 @@ public abstract class Window extends JFrame {
 	 * Serial number.
 	 */
 	private static final long serialVersionUID = 7446192599263749847L;
+	
+	private JComponent current;
 
 	/**
 	 * Creates a window in which the application takes place.
@@ -42,12 +42,7 @@ public abstract class Window extends JFrame {
 	 * @return true if it is double buffered.
 	 */
 	public boolean isDoubleBuffered() {
-		for (Component component: this.getComponents()) {
-			if (!(component.isDoubleBuffered())) {
-				return false;
-			}
-		}
-		return true;
+		return current != null && current.isDoubleBuffered();
 	}
 	
 	/**
@@ -56,7 +51,11 @@ public abstract class Window extends JFrame {
 	 * @param component The component.
 	 */
 	public void setScreen(JComponent component) {
-		this.removeAll();
+		if  (current != null) {
+			this.remove(current);
+		}
+		current = component;
 		this.add(component);
+		this.validate();
 	}
 }
