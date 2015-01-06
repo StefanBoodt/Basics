@@ -21,6 +21,9 @@ public abstract class Window extends JFrame {
 	 */
 	private static final long serialVersionUID = 7446192599263749847L;
 	
+	/**
+	 * The current component.
+	 */
 	private JComponent current;
 
 	/**
@@ -29,6 +32,7 @@ public abstract class Window extends JFrame {
 	public Window() {
 		super();
 		setDefaultMainMenu();
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
 	/**

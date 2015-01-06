@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.geom.Line2D;
+
 import interfaces.Drawable;
 
 /**
@@ -36,4 +38,12 @@ public interface GameObject extends GamePiece {
 	 * @return The number of hits remaining.
 	 */
 	public int getRemainingHits();
+	
+	/**
+	 * Checks if the line given by the line2D object is intersected by this
+	 * GameObject.
+	 * @param line The line to check against.
+	 * @return true iff they intersect.
+	 */
+	public boolean intersects(Line2D line);
 }

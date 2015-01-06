@@ -1,5 +1,7 @@
 package game;
 
+import javax.swing.JComponent;
+
 /**
  * The game class. It represents a game.
  * 
@@ -9,7 +11,12 @@ package game;
  * @author stefanboodt
  *
  */
-public abstract class Game {
+public abstract class Game extends JComponent {
+
+	/**
+	 * Serial number
+	 */
+	private static final long serialVersionUID = 3021737934673579330L;
 
 	/**
 	 * Checks whether or not the game is paused.
@@ -22,10 +29,12 @@ public abstract class Game {
 	private long lastTime;
 	
 	/**
-	 * Creates a new Game, and sets it pause to false.
+	 * Creates a new Game, and sets it pause to false. It also sets it to
+	 * be double buffered.
 	 */
 	public Game() {
 		super();
+		this.setDoubleBuffered(true);
 		getElapsedTime();
 		paused = false; // So the stop method can be run.
 		stop();

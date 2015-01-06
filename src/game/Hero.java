@@ -16,4 +16,32 @@ package game;
  */
 public interface Hero extends GameObject {
 
+	/**
+	 * Sets the vertical distance between two move calls.
+	 * @param dx The amount moved every move.
+	 */
+	public void setDX(float dx);
+	
+	/**
+	 * Gets the vertical distance between two move calls.
+	 * @return The amount moved every move.
+	 */
+	public float getDX();
+	
+	/**
+	 * Sets the horizontal distance between two move calls.
+	 * @param dy The amount moved every move.
+	 */
+	public void setDY(float dy);
+	
+	/**
+	 * Gets the horizontal distance between two move calls.
+	 * @return The amount moved every move.
+	 */
+	public float getDY();
+	
+	/**
+	 * Moves the hero.
+	 */
+	public void move();
 }

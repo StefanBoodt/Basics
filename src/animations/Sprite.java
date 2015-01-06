@@ -1,5 +1,8 @@
 package animations;
 
+import interfaces.Drawable;
+
+import java.awt.Graphics;
 import java.awt.Image;
 
 /**
@@ -16,7 +19,7 @@ import java.awt.Image;
  * @author stefanboodt
  *
  */
-public class Sprite {
+public class Sprite implements Drawable {
 
 	/**
 	 * The animation of the sprite.
@@ -179,5 +182,11 @@ public class Sprite {
 			return this.animation.equals(((Sprite) other).animation);
 		}
 		return false;
+	}
+
+	@Override
+	public void draw(Graphics g) {
+		g.drawImage(getAnimation().getImage(), (int) x, (int) y,
+				getWidth(), getHeight(), null);
 	}
 }
