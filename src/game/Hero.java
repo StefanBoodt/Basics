@@ -44,4 +44,10 @@ public interface Hero extends GameObject {
 	 * Moves the hero.
 	 */
 	public void move();
+	
+	/**
+	 * Updates the sprite of the hero and it's movements by elapsedTime.
+	 * @param ElapsedTime The time that has elapsed since the last update.
+	 */
+	public void update(long ElapsedTime);
 }

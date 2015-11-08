@@ -1,1 +1,8 @@
 /target/
+*.zip
+*.prefs
+*.jar
+*.classpath
+
+# Now exclude the generated zip files.
+/files/*.zip
