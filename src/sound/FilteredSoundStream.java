@@ -51,7 +51,7 @@ public class FilteredSoundStream extends FilterInputStream {
 	 * @see FilterInputStream#read(byte[], int, int)
 	 */
 	@Override
-	public int read(byte[] samples, int offset, int length) 
+	public int read(byte[] samples, int offset, int length)
 			throws IOException {
 		int bytesRead = super.read(samples, offset, length);
 		if (bytesRead > 0) {

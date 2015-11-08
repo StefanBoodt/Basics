@@ -7,8 +7,8 @@ package sound;
  * every sound played. They can be reused however by calling the
  * reset method after they are finished playing.
  * 
- * @since 10-8-2014
- * @version 10-8-2014
+ * @since 10-08-2014
+ * @version 10-08-2014
  * 
  * @see Sound
  * @see SoundManager

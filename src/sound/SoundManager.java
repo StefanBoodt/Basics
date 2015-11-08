@@ -59,7 +59,7 @@ public class SoundManager extends ThreadPool implements Observer {
 	/**
 	 * The lock for pauses.
 	 */
-	private final static Object pausedLock = new Object();
+	private final static Object PAUSEDLOCK = new Object();
 	
 	/**
 	 * Keeps track of the paused state of the soundmanager.
@@ -100,8 +100,8 @@ public class SoundManager extends ThreadPool implements Observer {
 	}
 	
 	/**
-	 * Gets the maximum amount of sounds of the given format the player
-	 * can play, with the default mixer.
+	 * Gets the maximum amount of sounds of the given format
+	 * the player can play, with the default mixer.
 	 * @param format The format to check.
 	 * @return The maximum amount of sounds playable.
 	 */
@@ -144,13 +144,13 @@ public class SoundManager extends ThreadPool implements Observer {
 	 */
 	public void setPaused(boolean paused) {
 		if (this.paused != paused) {
-			synchronized (pausedLock) {
+			synchronized (PAUSEDLOCK) {
 				this.paused = paused;
 				for (SoundPlayerThread player: players) {
 					player.setPaused(paused);
 				}
 				if (!paused) {
-					pausedLock.notifyAll();
+					PAUSEDLOCK.notifyAll();
 				}
 			}
 		}
@@ -409,10 +409,10 @@ public class SoundManager extends ThreadPool implements Observer {
 			try {
 				int numBytesRead = 0;
 				while (numBytesRead != -1) {
-					synchronized (pausedLock) {
+					synchronized (PAUSEDLOCK) {
 						if (paused) {
 							try {
-								pausedLock.wait();
+								PAUSEDLOCK.wait();
 							}
 							catch (InterruptedException e) {
 								/* Prints StackTrace to notify users of
