@@ -2,7 +2,8 @@
 *.zip
 *.prefs
 *.jar
-*.classpath
+.classpath
 
 # Now exclude the generated zip files.
-/files/*.zip
+**/*.zip
+**/*.gz
